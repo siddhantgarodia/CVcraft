@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     address: true,
     telephone: true,
   },
-  metadataBase: new URL("https://cvcraft.vercel.app"),
+  metadataBase: new URL("https://cvcraft-nu.vercel.app"),
   alternates: {
     canonical: "/",
   },
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: "CVCRAFT - Smart Resume Builder with AI-Powered Feedback",
     description:
       "Create professional, ATS-friendly resumes with AI-powered feedback. Our smart resume builder helps you craft job-winning resumes tailored to your target roles.",
-    url: "https://cvcraft.vercel.app",
+    url: "https://cvcraft-nu.vercel.app",
     siteName: "CVCRAFT",
     images: [
       {

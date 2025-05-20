@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://cvcraft.vercel.app/sitemap.xml
+Sitemap: https://cvcraft-nu.vercel.app/sitemap.xml

@@ -15,9 +15,9 @@ export default function StructuredData() {
     author: {
       "@type": "Organization",
       name: "CVCRAFT",
-      url: "https://cvcraft.vercel.app",
+      url: "https://cvcraft-nu.vercel.app",
     },
-    screenshot: "https://cvcraft.vercel.app/images/resume-builder-screenshot.png",
+    screenshot: "https://cvcraft-nu.vercel.app/images/resume-builder-screenshot.png",
     featureList: "AI-powered feedback, ATS optimization, Multiple templates, PDF export, Version history",
   }
 
