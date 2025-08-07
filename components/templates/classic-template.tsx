@@ -1,13 +1,16 @@
-import type { ResumeData } from "@/lib/types"
-import Image from "next/image"
+import type { ResumeData } from "@/lib/types";
+import Image from "next/image";
 
 interface ClassicTemplateProps {
-  resumeData: ResumeData
-  profileImage?: string | null
+  resumeData: ResumeData;
+  profileImage?: string | null;
 }
 
-export default function ClassicTemplate({ resumeData, profileImage }: ClassicTemplateProps) {
-  const { personalInfo, experience, education, skills } = resumeData
+export default function ClassicTemplate({
+  resumeData,
+  profileImage,
+}: ClassicTemplateProps) {
+  const { personalInfo, experience, education, skills } = resumeData;
 
   return (
     <div
@@ -28,34 +31,52 @@ export default function ClassicTemplate({ resumeData, profileImage }: ClassicTem
             </div>
           </div>
         )}
-        <h1 className="text-3xl font-bold text-slate-900 mb-1">{personalInfo.fullName}</h1>
-        {personalInfo.title && <p className="text-xl text-slate-700 mb-3">{personalInfo.title}</p>}
+        <h1 className="text-3xl font-bold text-slate-900 mb-1">
+          {personalInfo.fullName}
+        </h1>
+        {personalInfo.title && (
+          <p className="text-xl text-slate-700 mb-3">{personalInfo.title}</p>
+        )}
 
         <div className="flex flex-wrap justify-center gap-x-4 text-sm text-slate-700">
-          {personalInfo.email && <span className="break-all">{personalInfo.email}</span>}
+          {personalInfo.email && (
+            <span className="break-all">{personalInfo.email}</span>
+          )}
           {personalInfo.phone && <span>{personalInfo.phone}</span>}
           {personalInfo.location && <span>{personalInfo.location}</span>}
-          {personalInfo.website && <span className="break-all">{personalInfo.website}</span>}
-          {personalInfo.linkedin && <span className="break-all">{personalInfo.linkedin}</span>}
-          {personalInfo.github && <span className="break-all">{personalInfo.github}</span>}
+          {personalInfo.website && (
+            <span className="break-all">{personalInfo.website}</span>
+          )}
+          {personalInfo.linkedin && (
+            <span className="break-all">{personalInfo.linkedin}</span>
+          )}
+          {personalInfo.github && (
+            <span className="break-all">{personalInfo.github}</span>
+          )}
         </div>
       </header>
 
       {personalInfo.summary && (
         <section className="mb-6">
-          <h2 className="text-xl font-bold text-slate-900 mb-3 uppercase">Summary</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-3 uppercase">
+            Summary
+          </h2>
           <p className="text-slate-700">{personalInfo.summary}</p>
         </section>
       )}
 
       {experience.length > 0 && (
         <section className="mb-6">
-          <h2 className="text-xl font-bold text-slate-900 mb-4 uppercase">Experience</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-4 uppercase">
+            Experience
+          </h2>
           <div className="space-y-6">
             {experience.map((exp) => (
               <div key={exp.id}>
                 <div className="flex justify-between items-baseline mb-1">
-                  <h3 className="text-lg font-bold text-slate-800">{exp.title}</h3>
+                  <h3 className="text-lg font-bold text-slate-800">
+                    {exp.position}
+                  </h3>
                   <span className="text-slate-600">
                     {exp.startDate} - {exp.current ? "Present" : exp.endDate}
                   </span>
@@ -64,7 +85,11 @@ export default function ClassicTemplate({ resumeData, profileImage }: ClassicTem
                   <p className="font-semibold text-slate-700">{exp.company}</p>
                   <p className="text-slate-600">{exp.location}</p>
                 </div>
-                <p className="text-slate-700 whitespace-pre-line">{exp.description}</p>
+                <ul className="text-slate-700 list-disc list-inside space-y-1">
+                  {exp.responsibilities.map((resp, index) => (
+                    <li key={index}>{resp}</li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
@@ -73,21 +98,33 @@ export default function ClassicTemplate({ resumeData, profileImage }: ClassicTem
 
       {education.length > 0 && (
         <section className="mb-6">
-          <h2 className="text-xl font-bold text-slate-900 mb-4 uppercase">Education</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-4 uppercase">
+            Education
+          </h2>
           <div className="space-y-4">
             {education.map((edu) => (
               <div key={edu.id}>
                 <div className="flex justify-between items-baseline mb-1">
-                  <h3 className="text-lg font-bold text-slate-800">{edu.degree}</h3>
+                  <h3 className="text-lg font-bold text-slate-800">
+                    {edu.degree}
+                  </h3>
                   <span className="text-slate-600">
                     {edu.startDate} - {edu.endDate}
                   </span>
                 </div>
                 <div className="flex justify-between items-baseline mb-2">
-                  <p className="font-semibold text-slate-700">{edu.institution}</p>
+                  <p className="font-semibold text-slate-700">
+                    {edu.institution}
+                  </p>
                   <p className="text-slate-600">{edu.location}</p>
                 </div>
-                {edu.description && <p className="text-slate-700">{edu.description}</p>}
+                {edu.achievements.length > 0 && (
+                  <ul className="text-slate-700 list-disc list-inside space-y-1">
+                    {edu.achievements.map((achievement, index) => (
+                      <li key={index}>{achievement}</li>
+                    ))}
+                  </ul>
+                )}
               </div>
             ))}
           </div>
@@ -96,10 +133,15 @@ export default function ClassicTemplate({ resumeData, profileImage }: ClassicTem
 
       {skills.length > 0 && (
         <section>
-          <h2 className="text-xl font-bold text-slate-900 mb-4 uppercase">Skills</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-4 uppercase">
+            Skills
+          </h2>
           <div className="flex flex-wrap gap-2">
             {skills.map((skill) => (
-              <span key={skill.id} className="bg-slate-100 text-slate-800 px-3 py-1 rounded-md text-sm">
+              <span
+                key={skill.id}
+                className="bg-slate-100 text-slate-800 px-3 py-1 rounded-md text-sm"
+              >
                 {skill.name} {skill.level !== "Beginner" && `(${skill.level})`}
               </span>
             ))}
@@ -107,5 +149,5 @@ export default function ClassicTemplate({ resumeData, profileImage }: ClassicTem
         </section>
       )}
     </div>
-  )
+  );
 }

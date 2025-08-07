@@ -1,14 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  // Enable strict mode for better development experience
+  reactStrictMode: true,
+
+  // Configure images
   images: {
     unoptimized: true,
   },
-}
 
-export default nextConfig
+  // Enable experimental features for better performance
+  experimental: {
+    optimizePackageImports: ["lucide-react", "@radix-ui/react-icons"],
+  },
+};
+
+export default nextConfig;

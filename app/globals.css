@@ -101,3 +101,27 @@
     page-break-inside: avoid;
   }
 }
+
+/* Print mode styles for PDF export */
+.print-mode {
+  transform: none !important;
+  scale: 1 !important;
+  width: 816px !important;
+  height: auto !important;
+  overflow: visible !important;
+  background: white !important;
+  color: black !important;
+  font-family: "Times New Roman", serif !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+
+.print-mode * {
+  color: inherit !important;
+  background: transparent !important;
+}
+
+.print-mode img {
+  max-width: 100% !important;
+  height: auto !important;
+}

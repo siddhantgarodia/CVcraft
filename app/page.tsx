@@ -1,8 +1,15 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { ArrowRight, CheckCircle, FileText, Zap, Award, LayoutTemplate } from "lucide-react"
-import StructuredData from "./structured-data"
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import {
+  ArrowRight,
+  CheckCircle,
+  FileText,
+  Zap,
+  Award,
+  LayoutTemplate,
+} from "lucide-react";
+import StructuredData from "./structured-data";
 
 export default function HomePage() {
   return (
@@ -20,16 +27,28 @@ export default function HomePage() {
         </div>
 
         <nav className="hidden md:flex items-center space-x-8">
-          <Link href="/" className="text-sm font-medium text-slate-900 hover:text-blue-600">
+          <Link
+            href="/"
+            className="text-sm font-medium text-slate-900 hover:text-blue-600"
+          >
             Home
           </Link>
-          <Link href="#features" className="text-sm font-medium text-slate-900 hover:text-blue-600">
+          <Link
+            href="#features"
+            className="text-sm font-medium text-slate-900 hover:text-blue-600"
+          >
             Features
           </Link>
-          <Link href="#templates" className="text-sm font-medium text-slate-900 hover:text-blue-600">
+          <Link
+            href="#templates"
+            className="text-sm font-medium text-slate-900 hover:text-blue-600"
+          >
             Templates
           </Link>
-          <Link href="#testimonials" className="text-sm font-medium text-slate-900 hover:text-blue-600">
+          <Link
+            href="#testimonials"
+            className="text-sm font-medium text-slate-900 hover:text-blue-600"
+          >
             Testimonials
           </Link>
         </nav>
@@ -68,7 +87,8 @@ export default function HomePage() {
             </h1>
 
             <p className="text-lg text-slate-600 mb-8">
-              Our AI helps you craft professional, ATS-friendly resumes effortlessly.
+              Our AI helps you craft professional, ATS-friendly resumes
+              effortlessly.
             </p>
 
             <Button size="lg" asChild className="rounded-md">
@@ -85,8 +105,12 @@ export default function HomePage() {
       <section id="features" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Why Choose Our AI Resume Builder?</h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">Smart Features to Elevate Your Job Application</p>
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">
+              Why Choose Our AI Resume Builder?
+            </h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              Smart Features to Elevate Your Job Application
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -94,9 +118,12 @@ export default function HomePage() {
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
                 <Zap className="h-6 w-6 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">AI-Powered Feedback</h3>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                AI-Powered Feedback
+              </h3>
               <p className="text-slate-600">
-                Get real-time suggestions to improve your resume content, formatting, and keyword optimization.
+                Get real-time suggestions to improve your resume content,
+                formatting, and keyword optimization.
               </p>
             </div>
 
@@ -104,9 +131,12 @@ export default function HomePage() {
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
                 <LayoutTemplate className="h-6 w-6 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">ATS-Friendly Templates</h3>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                ATS-Friendly Templates
+              </h3>
               <p className="text-slate-600">
-                Our professionally designed templates are optimized to pass Applicant Tracking Systems.
+                Our professionally designed templates are optimized to pass
+                Applicant Tracking Systems.
               </p>
             </div>
 
@@ -114,9 +144,12 @@ export default function HomePage() {
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
                 <Award className="h-6 w-6 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Job-Specific Tailoring</h3>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                Job-Specific Tailoring
+              </h3>
               <p className="text-slate-600">
-                Customize your resume for specific job descriptions with our intelligent keyword matching.
+                Customize your resume for specific job descriptions with our
+                intelligent keyword matching.
               </p>
             </div>
           </div>
@@ -142,7 +175,9 @@ export default function HomePage() {
       <section id="templates" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Professional Resume Templates</h2>
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">
+              Professional Resume Templates
+            </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               Choose from our collection of ATS-optimized templates
             </p>
@@ -161,7 +196,9 @@ export default function HomePage() {
               </div>
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-slate-900">Modern</h3>
-                <p className="text-sm text-slate-600 mb-4">Professional and clean design</p>
+                <p className="text-sm text-slate-600 mb-4">
+                  Professional and clean design
+                </p>
                 <Button variant="outline" size="sm" className="w-full" asChild>
                   <Link href="/builder">Use Template</Link>
                 </Button>
@@ -179,8 +216,12 @@ export default function HomePage() {
                 />
               </div>
               <div className="p-4">
-                <h3 className="text-lg font-semibold text-slate-900">Classic</h3>
-                <p className="text-sm text-slate-600 mb-4">Traditional and elegant layout</p>
+                <h3 className="text-lg font-semibold text-slate-900">
+                  Classic
+                </h3>
+                <p className="text-sm text-slate-600 mb-4">
+                  Traditional and elegant layout
+                </p>
                 <Button variant="outline" size="sm" className="w-full" asChild>
                   <Link href="/builder">Use Template</Link>
                 </Button>
@@ -198,8 +239,12 @@ export default function HomePage() {
                 />
               </div>
               <div className="p-4">
-                <h3 className="text-lg font-semibold text-slate-900">Minimal</h3>
-                <p className="text-sm text-slate-600 mb-4">Simple and focused design</p>
+                <h3 className="text-lg font-semibold text-slate-900">
+                  Minimal
+                </h3>
+                <p className="text-sm text-slate-600 mb-4">
+                  Simple and focused design
+                </p>
                 <Button variant="outline" size="sm" className="w-full" asChild>
                   <Link href="/builder">Use Template</Link>
                 </Button>
@@ -217,8 +262,12 @@ export default function HomePage() {
                 />
               </div>
               <div className="p-4">
-                <h3 className="text-lg font-semibold text-slate-900">Creative</h3>
-                <p className="text-sm text-slate-600 mb-4">Bold design for creative professionals</p>
+                <h3 className="text-lg font-semibold text-slate-900">
+                  Creative
+                </h3>
+                <p className="text-sm text-slate-600 mb-4">
+                  Bold design for creative professionals
+                </p>
                 <Button variant="outline" size="sm" className="w-full" asChild>
                   <Link href="/builder">Use Template</Link>
                 </Button>
@@ -237,8 +286,8 @@ export default function HomePage() {
                 Everything You Need to Create the Perfect Resume
               </h2>
               <p className="text-lg text-slate-600 mb-8">
-                Our comprehensive resume builder provides all the tools you need to create a professional, job-winning
-                resume.
+                Our comprehensive resume builder provides all the tools you need
+                to create a professional, job-winning resume.
               </p>
 
               <div className="space-y-4">
@@ -282,9 +331,12 @@ export default function HomePage() {
       <section id="testimonials" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">What Our Users Say</h2>
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">
+              What Our Users Say
+            </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Thousands of job seekers have found success with our resume builder
+              Thousands of job seekers have found success with our resume
+              builder
             </p>
           </div>
 
@@ -327,11 +379,15 @@ export default function HomePage() {
                     />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900">{testimonial.name}</h3>
+                    <h3 className="font-semibold text-slate-900">
+                      {testimonial.name}
+                    </h3>
                     <p className="text-sm text-slate-600">{testimonial.role}</p>
                   </div>
                 </div>
-                <p className="text-slate-700 italic">"{testimonial.quote}"</p>
+                <p className="text-slate-700 italic">
+                  &ldquo;{testimonial.quote}&rdquo;
+                </p>
               </div>
             ))}
           </div>
@@ -341,9 +397,12 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="py-20 bg-blue-600">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Ready to Land Your Dream Job?</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Ready to Land Your Dream Job?
+          </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Create a professional, ATS-friendly resume in minutes with our AI-powered resume builder.
+            Create a professional, ATS-friendly resume in minutes with our
+            AI-powered resume builder.
           </p>
           <Button size="lg" variant="secondary" asChild>
             <Link href="/builder">
@@ -365,24 +424,35 @@ export default function HomePage() {
                 </div>
                 <span className="text-xl font-bold text-white">CVCRAFT</span>
               </div>
-              <p className="mb-4">AI-powered resume builder to help you land your dream job.</p>
+              <p className="mb-4">
+                AI-powered resume builder to help you land your dream job.
+              </p>
             </div>
 
             <div>
               <h3 className="text-white font-semibold mb-4">Product</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link href="#features" className="hover:text-white transition-colors">
+                  <Link
+                    href="#features"
+                    className="hover:text-white transition-colors"
+                  >
                     Features
                   </Link>
                 </li>
                 <li>
-                  <Link href="#templates" className="hover:text-white transition-colors">
+                  <Link
+                    href="#templates"
+                    className="hover:text-white transition-colors"
+                  >
                     Templates
                   </Link>
                 </li>
                 <li>
-                  <Link href="#testimonials" className="hover:text-white transition-colors">
+                  <Link
+                    href="#testimonials"
+                    className="hover:text-white transition-colors"
+                  >
                     Testimonials
                   </Link>
                 </li>
@@ -433,10 +503,12 @@ export default function HomePage() {
           </div>
 
           <div className="border-t border-slate-800 mt-8 pt-8 text-center">
-            <p>&copy; {new Date().getFullYear()} CVCRAFT. All rights reserved.</p>
+            <p>
+              &copy; {new Date().getFullYear()} CVCRAFT. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }

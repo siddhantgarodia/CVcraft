@@ -1,12 +1,28 @@
 {
-  "name": "my-v0-project",
-  "version": "0.1.0",
+  "name": "cvcraft",
+  "version": "1.0.0",
   "private": true,
+  "description": "Professional resume builder with LaTeX support and real-time preview",
+  "keywords": ["resume", "cv", "latex", "builder", "nextjs", "typescript"],
+  "author": "CVCraft Team",
+  "license": "MIT",
+  "homepage": "https://github.com/cvcraft/cvcraft",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cvcraft/cvcraft.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cvcraft/cvcraft/issues"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf .next out",
+    "export": "next build && next export"
   },
   "dependencies": {
     "@ai-sdk/openai": "latest",
@@ -47,7 +63,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
-    "date-fns": "4.1.0",
+    "date-fns": "^3.6.0",
     "embla-carousel-react": "8.5.1",
     "html2canvas": "latest",
     "input-otp": "1.4.1",
@@ -56,7 +72,7 @@
     "next": "15.2.4",
     "next-themes": "latest",
     "react": "^19",
-    "react-day-picker": "8.10.1",
+    "react-day-picker": "^9.0.0",
     "react-dom": "^19",
     "react-hook-form": "^7.54.1",
     "react-resizable-panels": "^2.1.7",
@@ -71,6 +87,8 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "eslint": "^9.32.0",
+    "eslint-config-next": "^15.4.5",
     "postcss": "^8",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"

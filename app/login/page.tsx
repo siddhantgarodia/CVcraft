@@ -1,8 +1,8 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { ArrowLeft } from "lucide-react"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ArrowLeft } from "lucide-react";
 
 export default function LoginPage() {
   return (
@@ -42,7 +42,10 @@ export default function LoginPage() {
                   type="checkbox"
                   className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Remember me
                 </label>
               </div>
@@ -61,8 +64,11 @@ export default function LoginPage() {
 
           <div className="mt-6 text-center text-sm">
             <p className="text-slate-600">
-              Don't have an account?{" "}
-              <Link href="#" className="text-blue-600 hover:text-blue-500 font-medium">
+              Don&apos;t have an account?{" "}
+              <Link
+                href="#"
+                className="text-blue-600 hover:text-blue-500 font-medium"
+              >
                 Sign up
               </Link>
             </p>
@@ -70,5 +76,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

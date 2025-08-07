@@ -1,4 +1,4 @@
-import type { ResumeData } from "./types"
+import type { ResumeData } from "./types";
 
 export const defaultResumeData: ResumeData = {
   personalInfo: {
@@ -16,45 +16,65 @@ export const defaultResumeData: ResumeData = {
   experience: [
     {
       id: "exp-1",
-      title: "Senior Software Engineer",
+      position: "Senior Software Engineer",
       company: "Tech Innovations Inc.",
       location: "San Francisco, CA",
       startDate: "Jan 2020",
       endDate: "Present",
       current: true,
-      description:
-        "• Led a team of 5 developers in building a high-performance e-commerce platform using React, Node.js, and MongoDB\n• Implemented CI/CD pipelines that reduced deployment time by 40%\n• Optimized database queries resulting in a 30% improvement in application response time\n• Mentored junior developers and conducted code reviews to ensure code quality",
+      responsibilities: [
+        "Led a team of 5 developers in building a high-performance e-commerce platform using React, Node.js, and MongoDB",
+        "Implemented CI/CD pipelines that reduced deployment time by 40%",
+        "Optimized database queries resulting in a 30% improvement in application response time",
+        "Mentored junior developers and conducted code reviews to ensure code quality",
+      ],
     },
     {
       id: "exp-2",
-      title: "Software Engineer",
+      position: "Software Engineer",
       company: "WebSolutions Co.",
       location: "Oakland, CA",
       startDate: "Mar 2017",
       endDate: "Dec 2019",
       current: false,
-      description:
-        "• Developed and maintained RESTful APIs for client applications using Express.js\n• Created responsive web interfaces with React and Redux\n• Collaborated with UX designers to implement user-friendly interfaces\n• Participated in agile development processes, including daily stand-ups and sprint planning",
+      responsibilities: [
+        "Developed and maintained RESTful APIs for client applications using Express.js",
+        "Created responsive web interfaces with React and Redux",
+        "Collaborated with UX designers to implement user-friendly interfaces",
+        "Participated in agile development processes, including daily stand-ups and sprint planning",
+      ],
     },
   ],
   education: [
     {
       id: "edu-1",
-      degree: "Master of Science in Computer Science",
+      degree: "Master of Science",
+      field: "Computer Science",
       institution: "University of California, Berkeley",
       location: "Berkeley, CA",
       startDate: "Aug 2015",
       endDate: "May 2017",
-      description: "Specialized in Software Engineering and Artificial Intelligence. GPA: 3.8/4.0",
+      gpa: "3.8/4.0",
+      achievements: [
+        "Specialized in Software Engineering and Artificial Intelligence",
+        "Graduate Research Assistant in Machine Learning Lab",
+        "Published 2 research papers in top-tier conferences",
+      ],
     },
     {
       id: "edu-2",
-      degree: "Bachelor of Science in Computer Science",
+      degree: "Bachelor of Science",
+      field: "Computer Science",
       institution: "University of Washington",
       location: "Seattle, WA",
       startDate: "Sep 2011",
       endDate: "Jun 2015",
-      description: "Dean's List, Computer Science Club President",
+      gpa: "3.9/4.0",
+      achievements: [
+        "Dean's List for 4 consecutive years",
+        "Computer Science Club President",
+        "Graduated with honors",
+      ],
     },
   ],
   skills: [
@@ -99,4 +119,155 @@ export const defaultResumeData: ResumeData = {
       level: "Intermediate",
     },
   ],
-}
+  projects: [
+    {
+      id: "proj-1",
+      title: "E-commerce Platform",
+      description:
+        "A full-stack e-commerce platform built with React, Node.js, and MongoDB",
+      technologies: ["React", "Node.js", "MongoDB", "Express", "Stripe"],
+      url: "https://github.com/alexjohnson/ecommerce-platform",
+      startDate: "Jan 2023",
+      endDate: "Mar 2023",
+      current: false,
+      highlights: [
+        "Implemented real-time inventory management system",
+        "Integrated payment processing with Stripe API",
+        "Built responsive admin dashboard for product management",
+        "Achieved 99.9% uptime and handled 10,000+ concurrent users",
+      ],
+    },
+  ],
+  certifications: [
+    {
+      id: "cert-1",
+      name: "AWS Certified Solutions Architect",
+      issuer: "Amazon Web Services",
+      issueDate: "Dec 2022",
+      credentialId: "AWS-123456789",
+      url: "https://aws.amazon.com/verification",
+    },
+    {
+      id: "cert-2",
+      name: "Google Cloud Professional Developer",
+      issuer: "Google",
+      issueDate: "Nov 2021",
+      credentialId: "GCP-987654321",
+    },
+  ],
+  languages: [
+    {
+      id: "lang-1",
+      name: "English",
+      proficiency: "Native",
+    },
+    {
+      id: "lang-2",
+      name: "Spanish",
+      proficiency: "Fluent",
+    },
+    {
+      id: "lang-3",
+      name: "French",
+      proficiency: "Conversational",
+    },
+  ],
+  awards: [
+    {
+      id: "award-1",
+      title: "Employee of the Year",
+      issuer: "Tech Innovations Inc.",
+      date: "Dec 2023",
+      description:
+        "Recognized for outstanding contributions to team success and technical excellence",
+    },
+  ],
+  publications: [
+    {
+      id: "pub-1",
+      title: "Scalable Microservices Architecture",
+      authors: "Johnson, A., Smith, B., Davis, C.",
+      journal: "IEEE Software Engineering",
+      date: "Mar 2023",
+      doi: "10.1109/SE.2023.123456",
+    },
+  ],
+  volunteer: [
+    {
+      id: "vol-1",
+      organization: "Code for America",
+      role: "Technical Lead",
+      location: "San Francisco, CA",
+      startDate: "Jan 2022",
+      endDate: "Present",
+      current: true,
+      description: "Leading development of civic technology solutions",
+      achievements: [
+        "Built open-source tools used by 50+ government agencies",
+        "Mentored 20+ junior developers in civic tech",
+        "Organized hackathons benefiting local communities",
+      ],
+    },
+  ],
+  customSections: [],
+  sections: [
+    {
+      id: "personal",
+      type: "personal",
+      title: "Personal Information",
+      visible: true,
+      order: 1,
+    },
+    {
+      id: "experience",
+      type: "experience",
+      title: "Work Experience",
+      visible: true,
+      order: 2,
+    },
+    {
+      id: "education",
+      type: "education",
+      title: "Education",
+      visible: true,
+      order: 3,
+    },
+    { id: "skills", type: "skills", title: "Skills", visible: true, order: 4 },
+    {
+      id: "projects",
+      type: "projects",
+      title: "Projects",
+      visible: true,
+      order: 5,
+    },
+    {
+      id: "certifications",
+      type: "certifications",
+      title: "Certifications",
+      visible: true,
+      order: 6,
+    },
+    {
+      id: "languages",
+      type: "languages",
+      title: "Languages",
+      visible: true,
+      order: 7,
+    },
+    { id: "awards", type: "awards", title: "Awards", visible: true, order: 8 },
+    {
+      id: "publications",
+      type: "publications",
+      title: "Publications",
+      visible: true,
+      order: 9,
+    },
+    {
+      id: "volunteer",
+      type: "volunteer",
+      title: "Volunteer Experience",
+      visible: true,
+      order: 10,
+    },
+  ],
+};
