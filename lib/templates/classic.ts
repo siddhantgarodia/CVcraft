@@ -8,20 +8,8 @@ import {
 } from "../latex-utils";
 
 export function generateClassicTemplate(resumeData: ResumeData): string {
-  const {
-    personalInfo,
-    experience,
-    education,
-    skills,
-    projects,
-    certifications,
-    languages,
-    awards,
-    publications,
-    volunteer,
-    customSections,
-    sections,
-  } = resumeData;
+  const { personalInfo, experience, education, skills, projects, sections } =
+    resumeData;
 
   // Filter visible sections and sort by order
   const visibleSections = sections

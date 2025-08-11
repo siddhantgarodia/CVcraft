@@ -1,21 +1,9 @@
 import type { ResumeData } from "../types";
-import { escapeLatex, formatDate, generateBulletList } from "../latex-utils";
+import { escapeLatex, formatDate } from "../latex-utils";
 
 export function generateModernTemplate(resumeData: ResumeData): string {
-  const {
-    personalInfo,
-    experience,
-    education,
-    skills,
-    projects,
-    certifications,
-    languages,
-    awards,
-    publications,
-    volunteer,
-    customSections,
-    sections,
-  } = resumeData;
+  const { personalInfo, experience, education, skills, projects, sections } =
+    resumeData;
 
   // Filter visible sections and sort by order
   const visibleSections = sections

@@ -1,17 +1,11 @@
 import { jsPDF } from "jspdf";
-import type { ResumeData, Template } from "./types";
-import { exportResumeToLatex } from "./latex-generator";
+import type { ResumeData } from "./types";
 
 // Function to export resume to PDF with extractable text
-export async function exportResumeToPdf(
-  resumeData: ResumeData,
-  template: Template,
-  profileImage: string | null,
-  resumeElement: HTMLDivElement
-): Promise<void> {
+export async function exportResumeToPdf(resumeData: ResumeData): Promise<void> {
   try {
-    // Generate LaTeX content
-    const latexContent = exportResumeToLatex(resumeData, template);
+    // Generate LaTeX content (currently unused but kept for future implementation)
+    // const latexContent = exportResumeToLatex(resumeData, template);
 
     // Create a new jsPDF instance
     const pdf = new jsPDF({
@@ -37,7 +31,7 @@ export async function exportResumeToPdf(
     const pageHeight = 841.89;
     const margin = 40;
     const contentWidth = pageWidth - margin * 2;
-    const contentHeight = pageHeight - margin * 2;
+    // const contentHeight = pageHeight - margin * 2; // Unused variable
 
     // Set font
     pdf.setFont("helvetica");
@@ -69,7 +63,7 @@ export async function exportResumeToPdf(
       personalInfo.github,
     ].filter(Boolean);
 
-    contactInfo.forEach((info, index) => {
+    contactInfo.forEach((info) => {
       if (yPosition > pageHeight - margin - 20) {
         pdf.addPage();
         yPosition = margin + 20;
@@ -228,7 +222,7 @@ export async function exportResumeToPdf(
       pdf.setFont("helvetica", "normal");
 
       const skillsPerRow = 2;
-      const skillsPerPage = Math.floor((pageHeight - margin - yPosition) / 20);
+      // const skillsPerPage = Math.floor((pageHeight - margin - yPosition) / 20); // Unused variable
 
       for (let i = 0; i < resumeData.skills.length; i += skillsPerRow) {
         if (yPosition > pageHeight - margin - 30) {

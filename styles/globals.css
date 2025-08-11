@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Builder page refinements */
+.resume-section h2 {
+  letter-spacing: 0.02em;
+}
+.resume-section + .resume-section {
+  margin-top: 1.25rem;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }

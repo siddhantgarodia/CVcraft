@@ -2,6 +2,9 @@ import type { FeedbackItem, ResumeData, ATSScoreResult } from "./types";
 import { generateText } from "ai";
 import { openai } from "@ai-sdk/openai";
 
+// Centralized model selection: default to GPT-5 Preview for all clients, override via env var
+const MODEL_ID = process.env.NEXT_PUBLIC_GPT_MODEL || "gpt-5-preview"; // fallback previously was gpt-4o
+
 // This function generates AI-powered feedback for the resume
 export async function generateResumeFeedback(
   resumeData: ResumeData,
@@ -51,7 +54,7 @@ export async function generateResumeFeedback(
       return mockGenerateFeedback(resumeData, jobDescription);
     } else {
       const { text } = await generateText({
-        model: openai("gpt-4o"),
+        model: openai(MODEL_ID),
         prompt: prompt,
       });
 
@@ -114,7 +117,7 @@ export async function analyzeATSScore(
       return mockATSAnalysis(resumeData, jobDescription);
     } else {
       const { text } = await generateText({
-        model: openai("gpt-4o"),
+        model: openai(MODEL_ID),
         prompt: prompt,
       });
 

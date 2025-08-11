@@ -1,28 +1,8 @@
 import type { ResumeData } from "../types";
-import {
-  escapeLatex,
-  formatDate,
-  generateBulletList,
-  generateSection,
-  generateHeader,
-  generateLink,
-} from "../latex-utils";
+import { escapeLatex, generateBulletList } from "../latex-utils";
 
 export function generateAcademicTemplate(resumeData: ResumeData): string {
-  const {
-    personalInfo,
-    experience,
-    education,
-    skills,
-    projects,
-    certifications,
-    languages,
-    awards,
-    publications,
-    volunteer,
-    customSections,
-    sections,
-  } = resumeData;
+  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   // Filter visible sections and sort by order
   const visibleSections = sections
@@ -131,15 +111,22 @@ ${visibleSections
 \\begin{itemize}[leftmargin=0pt, itemindent=0pt]
 ${education
   .map(
-    (edu) => `
+    (edu: {
+      degree?: string;
+      field?: string;
+      dates?: string;
+      startDate?: string;
+      endDate?: string;
+      institution: string;
+      location?: string;
+    }) => `
   \\resumeSubheading
-    {${escapeLatex(edu.degree)} in ${escapeLatex(edu.field)}}
-    {${formatDate(edu.startDate)} -- ${
-      edu.endDate ? formatDate(edu.endDate) : "Present"
-    }}
+    {${escapeLatex(edu.degree || edu.field || "")}}
+    {${escapeLatex(
+      edu.dates || `${edu.startDate || ""} - ${edu.endDate || "Present"}`
+    )}}
     {${escapeLatex(edu.institution)}}
-    {${escapeLatex(edu.location || "")}}
-    ${generateBulletList(edu.achievements)}`
+    {${escapeLatex(edu.location || "")}}`
   )
   .join("\n")}
 \\end{itemize}`
@@ -151,56 +138,40 @@ ${education
 \\begin{itemize}[leftmargin=0pt, itemindent=0pt]
 ${experience
   .map(
-    (exp) => `
+    (exp: {
+      position: string;
+      dates?: string;
+      startDate?: string;
+      endDate?: string;
+      company: string;
+      location?: string;
+      points?: string[];
+      responsibilities?: string[];
+    }) => `
   \\resumeSubheading
     {${escapeLatex(exp.position)}}
-    {${formatDate(exp.startDate)} -- ${
-      exp.current ? "Present" : formatDate(exp.endDate)
-    }}
+    {${escapeLatex(
+      exp.dates || `${exp.startDate || ""} - ${exp.endDate || "Present"}`
+    )}}
     {${escapeLatex(exp.company)}}
     {${escapeLatex(exp.location || "")}}
-    ${generateBulletList(exp.responsibilities)}`
+    ${generateBulletList(
+      (exp.points || exp.responsibilities || []).filter((point: string) =>
+        point.trim()
+      )
+    )}`
   )
   .join("\n")}
 \\end{itemize}`
           : "";
 
       case "publications":
-        return publications.length > 0
-          ? `\\section{Publications}
-\\begin{itemize}[leftmargin=0pt, itemindent=0pt]
-${publications
-  .map(
-    (pub) => `
-  \\publicationItem
-    {${escapeLatex(pub.authors)}}
-    {${formatDate(pub.date)}}
-    {${escapeLatex(pub.title)}}
-    {${escapeLatex(pub.journal)}}
-    {${pub.doi ? `DOI: ${escapeLatex(pub.doi)}` : ""}}
-    {${pub.url ? generateLink("Link", pub.url) : ""}}`
-  )
-  .join("\n")}
-\\end{itemize}`
-          : "";
+        // Publications section - currently not implemented
+        return "";
 
       case "awards":
-        return awards.length > 0
-          ? `\\section{Honors \\& Awards}
-\\begin{itemize}[leftmargin=0pt, itemindent=0pt]
-${awards
-  .map(
-    (award) => `
-  \\resumeSubheading
-    {${escapeLatex(award.title)}}
-    {${formatDate(award.date)}}
-    {${escapeLatex(award.issuer)}}
-    {}
-    ${award.description ? `\\item ${escapeLatex(award.description)}` : ""}`
-  )
-  .join("\n")}
-\\end{itemize}`
-          : "";
+        // Awards section - currently not implemented
+        return "";
 
       case "skills":
         return skills.length > 0
