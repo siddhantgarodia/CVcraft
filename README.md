@@ -55,6 +55,27 @@
 - Node.js 18+
 - npm or pnpm
 
+### AI Features Setup (Optional)
+
+CVCraft includes AI-powered resume analysis using Google's Gemini AI. To enable these features:
+
+1. **Get a Gemini API Key**
+   - Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Create a new API key
+
+2. **Configure Environment Variables**
+   Create a `.env.local` file in the root directory:
+   ```bash
+   NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+
+3. **Available AI Features**
+   - **Resume Feedback**: Get detailed suggestions for improving your resume
+   - **ATS Analysis**: Analyze how well your resume will perform with Applicant Tracking Systems
+   - **Keyword Matching**: Identify missing keywords from job descriptions
+
+> **Note**: If no API key is provided, the app will use mock data for AI features.
+
 ### Installation
 
 1. **Clone the repository**

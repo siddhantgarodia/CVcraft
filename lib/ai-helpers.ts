@@ -1,9 +1,11 @@
 import type { FeedbackItem, ResumeData, ATSScoreResult } from "./types";
-// import { generateText } from "ai";
-// import { openai } from "@ai-sdk/openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Centralized model selection: default to GPT-5 Preview for all clients, override via env var
-const MODEL_ID = process.env.NEXT_PUBLIC_GPT_MODEL || "gpt-5-preview"; // fallback previously was gpt-4o
+// Initialize Gemini AI
+const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || "");
+
+// Centralized model selection: default to Gemini Pro for all clients, override via env var
+const MODEL_ID = process.env.NEXT_PUBLIC_GEMINI_MODEL || "gemini-1.5-pro";
 
 // This function generates AI-powered feedback for the resume
 export async function generateResumeFeedback(
@@ -11,7 +13,15 @@ export async function generateResumeFeedback(
   jobDescription: string
 ): Promise<FeedbackItem[]> {
   try {
-    // For a real implementation, we would use the AI SDK
+    // Check if API key is available
+    if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
+      console.warn("Gemini API key not found, using mock implementation");
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      return mockGenerateFeedback(resumeData, jobDescription);
+    }
+
+    const model = genAI.getGenerativeModel({ model: MODEL_ID });
+
     const prompt = `
     You are an expert resume reviewer and career coach. Analyze this resume data and provide specific, actionable feedback.
     
@@ -44,15 +54,23 @@ export async function generateResumeFeedback(
     5. Keyword matching with job description (if provided)
     
     Provide at least 3 feedback items, with at least one being positive (type: "success").
+    
+    Respond only with valid JSON, no additional text.
     `;
 
-    // In a real implementation, we would use the AI SDK
-    // For now, we'll use a mock implementation
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    return mockGenerateFeedback(resumeData, jobDescription);
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    try {
+      return JSON.parse(text) as FeedbackItem[];
+    } catch (error) {
+      console.error("Error parsing Gemini response:", error);
+      console.log("Raw response:", text);
+      return mockGenerateFeedback(resumeData, jobDescription);
+    }
   } catch (error) {
-    console.error("Error generating feedback:", error);
+    console.error("Error generating feedback with Gemini:", error);
     return mockGenerateFeedback(resumeData, jobDescription);
   }
 }
@@ -63,7 +81,15 @@ export async function analyzeATSScore(
   jobDescription: string
 ): Promise<ATSScoreResult> {
   try {
-    // For a real implementation, we would use the AI SDK
+    // Check if API key is available
+    if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
+      console.warn("Gemini API key not found, using mock implementation");
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      return mockATSAnalysis(resumeData, jobDescription);
+    }
+
+    const model = genAI.getGenerativeModel({ model: MODEL_ID });
+
     const prompt = `
     You are an expert in Applicant Tracking Systems (ATS). Analyze this resume data for ATS compatibility.
     
@@ -93,15 +119,23 @@ export async function analyzeATSScore(
     3. Content quality and relevance
     4. Use of industry-standard section headings
     5. Proper formatting of dates, contact info, etc.
+    
+    Respond only with valid JSON, no additional text.
     `;
 
-    // In a real implementation, we would use the AI SDK
-    // For now, we'll use a mock implementation
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    return mockATSAnalysis(resumeData, jobDescription);
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    try {
+      return JSON.parse(text) as ATSScoreResult;
+    } catch (error) {
+      console.error("Error parsing Gemini response:", error);
+      console.log("Raw response:", text);
+      return mockATSAnalysis(resumeData, jobDescription);
+    }
   } catch (error) {
-    console.error("Error analyzing ATS score:", error);
+    console.error("Error analyzing ATS score with Gemini:", error);
     return mockATSAnalysis(resumeData, jobDescription);
   }
 }

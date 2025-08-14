@@ -587,6 +587,95 @@ export default function BuilderPage() {
     }));
   };
 
+  // Custom Section handlers
+  const addCustomSection = () => {
+    const newCustomSection: CustomSection = {
+      id: `custom${Date.now()}`,
+      title: "",
+      type: "text",
+      content: "",
+      items: [],
+    };
+    setResumeData((prev) => ({
+      ...prev,
+      customSections: [...prev.customSections, newCustomSection],
+    }));
+  };
+
+  const updateCustomSection = (
+    id: string,
+    field: string,
+    value: string | "text" | "list" | "skills"
+  ) => {
+    setResumeData((prev) => ({
+      ...prev,
+      customSections: prev.customSections.map((section) =>
+        section.id === id ? { ...section, [field]: value } : section
+      ),
+    }));
+  };
+
+  const removeCustomSection = (id: string) => {
+    setResumeData((prev) => ({
+      ...prev,
+      customSections: prev.customSections.filter((section) => section.id !== id),
+    }));
+  };
+
+  const addCustomSectionItem = (sectionId: string) => {
+    const newItem: CustomSectionItem = {
+      id: `item${Date.now()}`,
+      title: "",
+      subtitle: "",
+      location: "",
+      dates: "",
+      points: [],
+    };
+    setResumeData((prev) => ({
+      ...prev,
+      customSections: prev.customSections.map((section) =>
+        section.id === sectionId
+          ? { ...section, items: [...section.items, newItem] }
+          : section
+      ),
+    }));
+  };
+
+  const updateCustomSectionItem = (
+    sectionId: string,
+    itemId: string,
+    field: string,
+    value: string | string[]
+  ) => {
+    setResumeData((prev) => ({
+      ...prev,
+      customSections: prev.customSections.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              items: section.items.map((item) =>
+                item.id === itemId ? { ...item, [field]: value } : item
+              ),
+            }
+          : section
+      ),
+    }));
+  };
+
+  const removeCustomSectionItem = (sectionId: string, itemId: string) => {
+    setResumeData((prev) => ({
+      ...prev,
+      customSections: prev.customSections.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              items: section.items.filter((item) => item.id !== itemId),
+            }
+          : section
+      ),
+    }));
+  };
+
   // File handlers
   const handleUploadLatexClick = () => {
     latexFileInputRef.current?.click();
@@ -925,6 +1014,12 @@ export default function BuilderPage() {
                       className="data-[state=active]:bg-violet-200/70 data-[state=active]:text-violet-800"
                     >
                       Skills
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="custom"
+                      className="data-[state=active]:bg-emerald-200/70 data-[state=active]:text-emerald-800"
+                    >
+                      Custom Sections
                     </TabsTrigger>
                   </TabsList>
 
@@ -1339,6 +1434,155 @@ export default function BuilderPage() {
                         </Card>
                       ))}
                     </TabsContent>
+
+                    {/* Custom Sections Tab */}
+                    <TabsContent value="custom" className="space-y-4 mt-0">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-lg font-semibold">Custom Sections</h3>
+                        <Button onClick={addCustomSection} size="sm">
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Custom Section
+                        </Button>
+                      </div>
+                      {resumeData.customSections.map((section) => (
+                        <Card
+                          key={section.id}
+                          className="p-4 bg-gradient-to-br from-emerald-50/50 to-teal-50/50 border border-emerald-200/50 shadow-lg hover:shadow-xl transition-all duration-200"
+                        >
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className="font-medium text-emerald-800">
+                              Custom Section
+                            </h4>
+                            <Button
+                              onClick={() => removeCustomSection(section.id)}
+                              variant="ghost"
+                              size="sm"
+                              className="text-rose-600 hover:text-rose-700 hover:bg-rose-100"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                          <div className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div>
+                                <Label>Section Title</Label>
+                                <Input
+                                  value={section.title}
+                                  onChange={(e) =>
+                                    updateCustomSection(section.id, "title", e.target.value)
+                                  }
+                                  placeholder="Certifications, Awards, etc."
+                                />
+                              </div>
+                              <div>
+                                <Label>Section Type</Label>
+                                <select
+                                  value={section.type}
+                                  onChange={(e) =>
+                                    updateCustomSection(section.id, "type", e.target.value as "text" | "list" | "skills")
+                                  }
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                >
+                                  <option value="text">Text</option>
+                                  <option value="list">List</option>
+                                  <option value="skills">Skills</option>
+                                </select>
+                              </div>
+                            </div>
+                            
+                            {section.type === "text" && (
+                              <div>
+                                <Label>Content</Label>
+                                <Textarea
+                                  value={section.content}
+                                  onChange={(e) =>
+                                    updateCustomSection(section.id, "content", e.target.value)
+                                  }
+                                  placeholder="Enter your content here..."
+                                  rows={4}
+                                />
+                              </div>
+                            )}
+                            
+                            {(section.type === "list" || section.type === "skills") && (
+                              <div>
+                                <div className="flex items-center justify-between mb-2">
+                                  <Label>Items</Label>
+                                  <Button
+                                    onClick={() => addCustomSectionItem(section.id)}
+                                    size="sm"
+                                    variant="outline"
+                                  >
+                                    <Plus className="h-3 w-3 mr-1" />
+                                    Add Item
+                                  </Button>
+                                </div>
+                                {section.items.map((item, index) => (
+                                  <div key={item.id} className="mb-3 p-3 border border-gray-200 rounded-md">
+                                    <div className="flex items-center justify-between mb-2">
+                                      <span className="text-sm font-medium text-gray-700">Item {index + 1}</span>
+                                      <Button
+                                        onClick={() => removeCustomSectionItem(section.id, item.id)}
+                                        size="sm"
+                                        variant="ghost"
+                                        className="text-rose-600 hover:text-rose-700 hover:bg-rose-100"
+                                      >
+                                        <Trash2 className="h-3 w-3" />
+                                      </Button>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                      <Input
+                                        value={item.title}
+                                        onChange={(e) =>
+                                          updateCustomSectionItem(section.id, item.id, "title", e.target.value)
+                                        }
+                                        placeholder="Title"
+                                        className="text-sm"
+                                      />
+                                      {section.type === "list" && (
+                                        <Input
+                                          value={item.subtitle || ""}
+                                          onChange={(e) =>
+                                            updateCustomSectionItem(section.id, item.id, "subtitle", e.target.value)
+                                          }
+                                          placeholder="Subtitle/Location"
+                                          className="text-sm"
+                                        />
+                                      )}
+                                    </div>
+                                    {section.type === "list" && (
+                                      <div className="mt-2">
+                                        <Input
+                                          value={item.dates || ""}
+                                          onChange={(e) =>
+                                            updateCustomSectionItem(section.id, item.id, "dates", e.target.value)
+                                          }
+                                          placeholder="Dates"
+                                          className="text-sm"
+                                        />
+                                      </div>
+                                    )}
+                                    {(section.type === "list" || section.type === "skills") && (
+                                      <div className="mt-2">
+                                        <Textarea
+                                          value={item.points?.join("\n") || ""}
+                                          onChange={(e) =>
+                                            updateCustomSectionItem(section.id, item.id, "points", e.target.value.split("\n"))
+                                          }
+                                          placeholder={section.type === "list" ? "Description points (one per line)" : "Skills (one per line)"}
+                                          rows={2}
+                                          className="text-sm"
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </Card>
+                      ))}
+                    </TabsContent>
                   </div>
                 </Tabs>
               )}
@@ -1526,6 +1770,58 @@ export default function BuilderPage() {
                                 <p className="text-sm text-gray-700">
                                   <strong>{skill.name}:</strong> {skill.skills}
                                 </p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                      {sectionId === "customSections" &&
+                        resumeData.customSections.length > 0 && (
+                          <div className="mb-6">
+                            {resumeData.customSections.map((section) => (
+                              <div key={section.id} className="mb-6">
+                                <h2 className="text-xl font-bold text-gray-900 border-b border-gray-300 pb-2 mb-4">
+                                  {section.title.toUpperCase()}
+                                </h2>
+                                
+                                {section.type === "text" && (
+                                  <div className="text-sm text-gray-700">
+                                    {section.content}
+                                  </div>
+                                )}
+                                
+                                {(section.type === "list" || section.type === "skills") && (
+                                  <div>
+                                    {section.items.map((item) => (
+                                      <div key={item.id} className="mb-3">
+                                        <div className="flex justify-between items-start mb-1">
+                                          <h3 className="font-semibold text-gray-900 text-sm">
+                                            {item.title}
+                                          </h3>
+                                          {item.dates && (
+                                            <p className="text-xs text-gray-600">
+                                              {item.dates}
+                                            </p>
+                                          )}
+                                        </div>
+                                        {item.subtitle && (
+                                          <p className="text-sm text-gray-700 mb-1">
+                                            {item.subtitle}
+                                          </p>
+                                        )}
+                                        {item.points && item.points.length > 0 && (
+                                          <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                            {item.points
+                                              .filter((point) => point.trim())
+                                              .map((point, index) => (
+                                                <li key={index}>{point}</li>
+                                              ))}
+                                          </ul>
+                                        )}
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
                               </div>
                             ))}
                           </div>

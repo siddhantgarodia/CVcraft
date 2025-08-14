@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "description": "Professional resume builder with LaTeX support and real-time preview",
-  "keywords": ["resume", "cv", "latex", "builder", "nextjs", "typescript"],
+  "keywords": [
+    "resume",
+    "cv",
+    "latex",
+    "builder",
+    "nextjs",
+    "typescript"
+  ],
   "author": "CVCraft Team",
   "license": "MIT",
   "homepage": "https://github.com/cvcraft/cvcraft",
@@ -30,6 +37,7 @@
     "@dnd-kit/modifiers": "^6.0.1",
     "@dnd-kit/sortable": "^8.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "1.2.2",
     "@radix-ui/react-alert-dialog": "1.1.4",
