@@ -1,6 +1,6 @@
 import type { FeedbackItem, ResumeData, ATSScoreResult } from "./types";
-import { generateText } from "ai";
-import { openai } from "@ai-sdk/openai";
+// import { generateText } from "ai";
+// import { openai } from "@ai-sdk/openai";
 
 // Centralized model selection: default to GPT-5 Preview for all clients, override via env var
 const MODEL_ID = process.env.NEXT_PUBLIC_GPT_MODEL || "gpt-5-preview"; // fallback previously was gpt-4o
@@ -48,23 +48,9 @@ export async function generateResumeFeedback(
 
     // In a real implementation, we would use the AI SDK
     // For now, we'll use a mock implementation
-    if (process.env.NODE_ENV === "development") {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      return mockGenerateFeedback(resumeData, jobDescription);
-    } else {
-      const { text } = await generateText({
-        model: openai(MODEL_ID),
-        prompt: prompt,
-      });
-
-      try {
-        return JSON.parse(text) as FeedbackItem[];
-      } catch (error) {
-        console.error("Error parsing AI response:", error);
-        return mockGenerateFeedback(resumeData, jobDescription);
-      }
-    }
+    // Simulate API call delay
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    return mockGenerateFeedback(resumeData, jobDescription);
   } catch (error) {
     console.error("Error generating feedback:", error);
     return mockGenerateFeedback(resumeData, jobDescription);
@@ -111,23 +97,9 @@ export async function analyzeATSScore(
 
     // In a real implementation, we would use the AI SDK
     // For now, we'll use a mock implementation
-    if (process.env.NODE_ENV === "development") {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      return mockATSAnalysis(resumeData, jobDescription);
-    } else {
-      const { text } = await generateText({
-        model: openai(MODEL_ID),
-        prompt: prompt,
-      });
-
-      try {
-        return JSON.parse(text) as ATSScoreResult;
-      } catch (error) {
-        console.error("Error parsing AI response:", error);
-        return mockATSAnalysis(resumeData, jobDescription);
-      }
-    }
+    // Simulate API call delay
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    return mockATSAnalysis(resumeData, jobDescription);
   } catch (error) {
     console.error("Error analyzing ATS score:", error);
     return mockATSAnalysis(resumeData, jobDescription);
