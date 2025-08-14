@@ -8,55 +8,64 @@ import {
   Zap,
   Award,
   LayoutTemplate,
+  Eye,
 } from "lucide-react";
 import StructuredData from "./structured-data";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-blue-50 to-indigo-50">
       <StructuredData />
       {/* Navigation */}
-      <header className="container mx-auto py-4 px-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-md flex items-center justify-center">
-              <FileText className="h-5 w-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-slate-900">CVCRAFT</span>
-          </Link>
-        </div>
+      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-rose-200/50 shadow-xl">
+        <div className="container mx-auto py-4 px-4 flex items-center justify-between">
+          <div className="flex items-center">
+            <Link href="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-r from-rose-500 to-indigo-500 rounded-md flex items-center justify-center">
+                <FileText className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-xl font-bold bg-gradient-to-r from-rose-600 to-indigo-600 bg-clip-text text-transparent">CVCRAFT</span>
+            </Link>
+          </div>
 
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link
-            href="/"
-            className="text-sm font-medium text-slate-900 hover:text-blue-600"
-          >
-            Home
-          </Link>
-          <Link
-            href="#features"
-            className="text-sm font-medium text-slate-900 hover:text-blue-600"
-          >
-            Features
-          </Link>
-          <Link
-            href="#templates"
-            className="text-sm font-medium text-slate-900 hover:text-blue-600"
-          >
-            Templates
-          </Link>
-          <Link
-            href="#testimonials"
-            className="text-sm font-medium text-slate-900 hover:text-blue-600"
-          >
-            Testimonials
-          </Link>
-        </nav>
+          <nav className="hidden md:flex items-center space-x-8">
+            <Link
+              href="/"
+              className="text-sm font-medium text-slate-900 hover:text-blue-600"
+            >
+              Home
+            </Link>
+            <Link
+              href="/builder"
+              className="text-sm font-medium text-slate-900 hover:text-blue-600"
+            >
+              Builder
+            </Link>
+            <Link
+              href="/analysis"
+              className="text-sm font-medium text-slate-900 hover:text-blue-600"
+            >
+              Analysis
+            </Link>
+            <Link
+              href="#features"
+              className="text-sm font-medium text-slate-900 hover:text-blue-600"
+            >
+              Features
+            </Link>
+            <Link
+              href="#templates"
+              className="text-sm font-medium text-slate-900 hover:text-blue-600"
+            >
+              Templates
+            </Link>
+          </nav>
 
-        <div className="flex items-center">
-          <Button size="sm" asChild>
-            <Link href="/builder">Get Started</Link>
-          </Button>
+          <div className="flex items-center">
+            <Button size="sm" asChild>
+              <Link href="/builder">Get Started</Link>
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -76,13 +85,13 @@ export default function HomePage() {
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
-            <div className="mb-6 bg-black p-3 rounded-lg">
-              <div className="w-10 h-10 bg-blue-600 rounded-md flex items-center justify-center">
-                <FileText className="h-6 w-6 text-white" />
+            <div className="mb-6 bg-white/80 backdrop-blur-lg p-4 rounded-xl border border-rose-200/50 shadow-lg">
+              <div className="w-12 h-12 bg-gradient-to-r from-rose-500 to-indigo-500 rounded-lg flex items-center justify-center">
+                <FileText className="h-7 w-7 text-white" />
               </div>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-rose-600 to-indigo-600 bg-clip-text text-transparent mb-4">
               Build a Job-Winning Resume in Minutes with AI
             </h1>
 
@@ -91,7 +100,7 @@ export default function HomePage() {
               effortlessly.
             </p>
 
-            <Button size="lg" asChild className="rounded-md">
+            <Button size="lg" asChild className="bg-gradient-to-r from-rose-500 to-indigo-500 hover:from-rose-600 hover:to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 rounded-xl">
               <Link href="/builder">
                 Get Started for Free
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -102,7 +111,7 @@ export default function HomePage() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section id="features" className="py-20 bg-white">
+      <section id="features" className="py-20 bg-white/80 backdrop-blur-lg">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
@@ -114,9 +123,9 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <Zap className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/90 backdrop-blur-lg p-6 rounded-xl border border-rose-200/50 hover:shadow-lg transition-all duration-200">
+              <div className="w-12 h-12 bg-gradient-to-r from-rose-100 to-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                <Zap className="h-6 w-6 text-rose-600" />
               </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2">
                 AI-Powered Feedback
@@ -127,9 +136,9 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <LayoutTemplate className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/90 backdrop-blur-lg p-6 rounded-xl border border-rose-200/50 hover:shadow-lg transition-all duration-200">
+              <div className="w-12 h-12 bg-gradient-to-r from-rose-100 to-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                <LayoutTemplate className="h-6 w-6 text-indigo-600" />
               </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2">
                 ATS-Friendly Templates
@@ -140,9 +149,9 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <Award className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/90 backdrop-blur-lg p-6 rounded-xl border border-rose-200/50 hover:shadow-lg transition-all duration-200">
+              <div className="w-12 h-12 bg-gradient-to-r from-rose-100 to-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                <Award className="h-6 w-6 text-rose-600" />
               </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2">
                 Job-Specific Tailoring
@@ -306,12 +315,20 @@ export default function HomePage() {
                 ))}
               </div>
 
-              <Button className="mt-8" asChild>
-                <Link href="/builder">
-                  Start Building Your Resume
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                <Button className="bg-gradient-to-r from-rose-500 to-indigo-500 hover:from-rose-600 hover:to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all duration-200" asChild>
+                  <Link href="/builder">
+                    Start Building Your Resume
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button variant="outline" className="border-rose-200 text-rose-700 hover:bg-rose-50" asChild>
+                  <Link href="/analysis">
+                    <Eye className="mr-2 h-4 w-4" />
+                    Analyze Your Resume
+                  </Link>
+                </Button>
+              </div>
             </div>
 
             <div className="bg-white p-8 rounded-xl shadow-lg">
@@ -395,16 +412,16 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-blue-600">
+      <section className="py-20 bg-gradient-to-r from-rose-500 to-indigo-500">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to Land Your Dream Job?
           </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
             Create a professional, ATS-friendly resume in minutes with our
             AI-powered resume builder.
           </p>
-          <Button size="lg" variant="secondary" asChild>
+          <Button size="lg" variant="secondary" asChild className="bg-white text-rose-600 hover:bg-white/90">
             <Link href="/builder">
               Build Your Resume Now
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -434,6 +451,22 @@ export default function HomePage() {
               <ul className="space-y-2">
                 <li>
                   <Link
+                    href="/builder"
+                    className="hover:text-white transition-colors"
+                  >
+                    Resume Builder
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/analysis"
+                    className="hover:text-white transition-colors"
+                  >
+                    Resume Analysis
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href="#features"
                     className="hover:text-white transition-colors"
                   >
@@ -446,14 +479,6 @@ export default function HomePage() {
                     className="hover:text-white transition-colors"
                   >
                     Templates
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#testimonials"
-                    className="hover:text-white transition-colors"
-                  >
-                    Testimonials
                   </Link>
                 </li>
               </ul>

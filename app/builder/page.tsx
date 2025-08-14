@@ -782,6 +782,17 @@ export default function BuilderPage() {
                 )}
               </div>
               <Button
+                variant="ghost"
+                size="sm"
+                asChild
+                className="text-indigo-700 hover:text-indigo-900 hover:bg-indigo-100"
+              >
+                <Link href="/analysis">
+                  <Eye className="h-4 w-4 mr-2" />
+                  Analysis
+                </Link>
+              </Button>
+              <Button
                 onClick={handleDownloadPDF}
                 disabled={isGeneratingPDF}
                 className="bg-gradient-to-r from-rose-500 to-indigo-500 hover:from-rose-600 hover:to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all duration-200"
@@ -986,7 +997,7 @@ export default function BuilderPage() {
                   onValueChange={setActiveTab}
                   className="h-full"
                 >
-                  <TabsList className="grid w-full grid-cols-5 bg-gradient-to-r from-rose-100/70 via-blue-100/70 to-indigo-100/70 m-6 mb-0 border border-rose-200/50">
+                  <TabsList className="grid w-full grid-cols-6 bg-gradient-to-r from-rose-100/70 via-blue-100/70 to-indigo-100/70 m-6 mb-0 border border-rose-200/50">
                     <TabsTrigger
                       value="personal"
                       className="data-[state=active]:bg-rose-200/70 data-[state=active]:text-rose-800"
