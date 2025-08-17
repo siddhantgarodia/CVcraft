@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateResumeFeedback } from "@/lib/ai-helpers";
-import type { ResumeData } from "@/lib/types";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +12,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const feedback = await generateResumeFeedback(resumeData, jobDescription || "");
+    const feedback = await generateResumeFeedback(
+      resumeData,
+      jobDescription || ""
+    );
 
     return NextResponse.json(feedback);
   } catch (error) {

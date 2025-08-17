@@ -60,16 +60,117 @@ export default function AnalysisPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [activeTab, setActiveTab] = useState("upload");
 
+  // Sample resume text for testing
+  const sampleResumeText = `John Smith
+555-123-4567 | john.smith@email.com | linkedin.com/in/johnsmith | github.com/johnsmith
+
+EXPERIENCE
+Senior Software Engineer | Tech Company Inc.
+San Francisco, CA | Jan 2020 - Present
+• Led development of scalable web applications using React, Node.js, and TypeScript
+• Implemented CI/CD pipelines that reduced deployment time by 40%
+• Mentored junior developers and conducted code reviews
+• Collaborated with product managers to define requirements and prioritize features
+
+Software Engineer | StartupXYZ
+Remote | Jun 2018 - Dec 2019
+• Built responsive web applications using JavaScript, HTML5, and CSS3
+• Developed RESTful APIs using Express.js and MongoDB
+• Participated in agile development process with 2-week sprints
+
+EDUCATION
+Bachelor of Science in Computer Science
+University of California, Berkeley | Berkeley, CA | 2014-2018
+
+TECHNICAL SKILLS
+Programming Languages: JavaScript, TypeScript, Python, Java
+Frontend: React, Vue.js, HTML5, CSS3, SASS
+Backend: Node.js, Express.js, Django, Spring Boot
+Databases: MongoDB, PostgreSQL, MySQL
+Cloud & DevOps: AWS, Docker, Kubernetes, Jenkins
+Tools: Git, Jira, Figma, VS Code`;
+
+  const loadSampleResume = () => {
+    setResumeText(sampleResumeText);
+    toast({
+      title: "Sample Resume Loaded",
+      description: "A sample resume has been loaded for testing.",
+    });
+  };
+
+  // Sample job descriptions for testing
+  const sampleJobDescriptions = [
+    {
+      title: "Software Engineer (React/Node.js)",
+      description: `We are looking for a Software Engineer with experience in modern web technologies.
+
+Requirements:
+- 3+ years of experience with React, Node.js, and JavaScript/TypeScript
+- Experience with RESTful APIs and microservices architecture
+- Knowledge of cloud platforms (AWS, Azure, or GCP)
+- Experience with databases (SQL and NoSQL)
+- Understanding of CI/CD pipelines and DevOps practices
+- Strong problem-solving skills and attention to detail
+- Experience with agile development methodologies
+
+Nice to have:
+- Experience with Docker and Kubernetes
+- Knowledge of GraphQL
+- Experience with testing frameworks (Jest, Cypress)
+- Understanding of performance optimization techniques`,
+    },
+    {
+      title: "Data Scientist (Python/ML)",
+      description: `We are seeking a Data Scientist to join our analytics team.
+
+Requirements:
+- Master's degree in Computer Science, Statistics, or related field
+- 2+ years of experience in data science or machine learning
+- Proficiency in Python, R, or similar programming languages
+- Experience with machine learning frameworks (scikit-learn, TensorFlow, PyTorch)
+- Knowledge of statistical analysis and experimental design
+- Experience with SQL and data manipulation
+- Strong communication skills to present findings to stakeholders
+
+Nice to have:
+- Experience with big data technologies (Spark, Hadoop)
+- Knowledge of deep learning and neural networks
+- Experience with cloud platforms (AWS SageMaker, Azure ML)
+- Understanding of MLOps and model deployment`,
+    },
+    {
+      title: "Product Manager",
+      description: `We are looking for a Product Manager to drive product strategy and execution.
+
+Requirements:
+- 3+ years of product management experience
+- Strong analytical and problem-solving skills
+- Experience with user research and data analysis
+- Knowledge of agile development methodologies
+- Excellent communication and stakeholder management skills
+- Experience with product analytics tools
+- Understanding of user experience principles
+
+Nice to have:
+- Technical background or experience working with engineering teams
+- Experience with A/B testing and experimentation
+- Knowledge of design thinking methodologies
+- Experience in the SaaS or B2B space`,
+    },
+  ];
+
   // Load saved data from localStorage
   useEffect(() => {
-    const savedData = localStorage.getItem("cvcraft-resume-data");
+    const savedData = localStorage.getItem("cvcraft-builder-data");
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData);
-        // Convert resume data to text format for analysis
-        const resumeTextFromData = generateResumeText(parsed);
-        setResumeText(resumeTextFromData);
-        setActiveTab("analysis");
+        // Extract resume data from the builder data structure
+        if (parsed.resumeData) {
+          const resumeTextFromData = generateResumeText(parsed.resumeData);
+          setResumeText(resumeTextFromData);
+          setActiveTab("analysis");
+        }
       } catch (error) {
         console.error("Failed to load saved data:", error);
       }
@@ -77,54 +178,110 @@ export default function AnalysisPage() {
   }, []);
 
   const generateResumeText = (data: any) => {
-    let text = `${data.personalInfo.name}\n`;
-    text += `${data.personalInfo.phone} | ${data.personalInfo.email}`;
-    if (data.personalInfo.linkedin) text += ` | ${data.personalInfo.linkedin}`;
-    if (data.personalInfo.github) text += ` | ${data.personalInfo.github}`;
-    text += "\n\n";
+    let text = "";
 
-    if (data.education.length > 0) {
+    // Personal Information
+    if (data.personalInfo?.name) {
+      text += `${data.personalInfo.name}\n`;
+      const contactInfo = [];
+      if (data.personalInfo.phone) contactInfo.push(data.personalInfo.phone);
+      if (data.personalInfo.email) contactInfo.push(data.personalInfo.email);
+      if (data.personalInfo.linkedin)
+        contactInfo.push(data.personalInfo.linkedin);
+      if (data.personalInfo.github) contactInfo.push(data.personalInfo.github);
+      if (contactInfo.length > 0) {
+        text += contactInfo.join(" | ") + "\n";
+      }
+      text += "\n";
+    }
+
+    // Education
+    if (data.education && data.education.length > 0) {
       text += "EDUCATION\n";
       data.education.forEach((edu: any) => {
-        text += `${edu.institution}, ${edu.location}\n`;
-        text += `${edu.degree}\n`;
-        text += `${edu.dates}\n\n`;
+        if (edu.institution) text += `${edu.institution}`;
+        if (edu.location) text += `, ${edu.location}`;
+        text += "\n";
+        if (edu.degree) text += `${edu.degree}\n`;
+        if (edu.dates) text += `${edu.dates}\n`;
+        text += "\n";
       });
     }
 
-    if (data.experience.length > 0) {
+    // Experience
+    if (data.experience && data.experience.length > 0) {
       text += "EXPERIENCE\n";
       data.experience.forEach((exp: any) => {
-        text += `${exp.position} | ${exp.company}\n`;
-        text += `${exp.location} | ${exp.dates}\n`;
-        exp.points.forEach((point: string) => {
-          text += `• ${point}\n`;
-        });
+        if (exp.position) text += `${exp.position}`;
+        if (exp.company) text += ` | ${exp.company}`;
+        text += "\n";
+        if (exp.location) text += `${exp.location}`;
+        if (exp.dates) text += ` | ${exp.dates}`;
+        text += "\n";
+        if (exp.points && exp.points.length > 0) {
+          exp.points.forEach((point: string) => {
+            if (point.trim()) text += `• ${point}\n`;
+          });
+        }
         text += "\n";
       });
     }
 
-    if (data.projects.length > 0) {
+    // Projects
+    if (data.projects && data.projects.length > 0) {
       text += "PROJECTS\n";
       data.projects.forEach((proj: any) => {
-        text += `${proj.title} | ${proj.technologies}\n`;
-        text += `${proj.dates}\n`;
-        proj.points.forEach((point: string) => {
-          text += `• ${point}\n`;
-        });
+        if (proj.title) text += `${proj.title}`;
+        if (proj.technologies) text += ` | ${proj.technologies}`;
+        text += "\n";
+        if (proj.dates) text += `${proj.dates}\n`;
+        if (proj.points && proj.points.length > 0) {
+          proj.points.forEach((point: string) => {
+            if (point.trim()) text += `• ${point}\n`;
+          });
+        }
         text += "\n";
       });
     }
 
-    if (data.skills.length > 0) {
+    // Skills
+    if (data.skills && data.skills.length > 0) {
       text += "TECHNICAL SKILLS\n";
       data.skills.forEach((skill: any) => {
-        text += `${skill.name}: ${skill.skills}\n`;
+        if (skill.name && skill.skills) {
+          text += `${skill.name}: ${skill.skills}\n`;
+        }
       });
       text += "\n";
     }
 
-    return text;
+    // Custom Sections
+    if (data.customSections && data.customSections.length > 0) {
+      data.customSections.forEach((section: any) => {
+        if (section.title) {
+          text += `${section.title.toUpperCase()}\n`;
+          if (section.content) {
+            text += `${section.content}\n`;
+          }
+          if (section.items && section.items.length > 0) {
+            section.items.forEach((item: any) => {
+              if (item.subtitle) text += `${item.subtitle}\n`;
+              if (item.location) text += `${item.location}\n`;
+              if (item.dates) text += `${item.dates}\n`;
+              if (item.points && item.points.length > 0) {
+                item.points.forEach((point: string) => {
+                  if (point.trim()) text += `• ${point}\n`;
+                });
+              }
+              text += "\n";
+            });
+          }
+          text += "\n";
+        }
+      });
+    }
+
+    return text.trim();
   };
 
   const analyzeResume = async () => {
@@ -138,6 +295,10 @@ export default function AnalysisPage() {
     }
 
     setIsAnalyzing(true);
+    console.log("Starting resume analysis...");
+    console.log("Resume text length:", resumeText.length);
+    console.log("Job description length:", jobDescription.length);
+
     try {
       const response = await fetch("/api/ats-analysis", {
         method: "POST",
@@ -151,10 +312,13 @@ export default function AnalysisPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to analyze resume");
+        throw new Error(
+          `Failed to analyze resume: ${response.status} ${response.statusText}`
+        );
       }
 
       const analysisData = await response.json();
+      console.log("Analysis completed successfully:", analysisData);
       setAnalysis(analysisData);
       setActiveTab("results");
 
@@ -163,6 +327,7 @@ export default function AnalysisPage() {
         description: `Your resume scored ${analysisData.overallScore}/100 for this position.`,
       });
     } catch (error) {
+      console.error("Analysis failed:", error);
       toast({
         title: "Analysis Failed",
         description: "Failed to analyze resume. Please try again.",
@@ -205,8 +370,45 @@ export default function AnalysisPage() {
           <h1 className="text-4xl font-bold text-slate-900">Resume Analysis</h1>
           <p className="text-slate-600 max-w-2xl">
             Get detailed ATS analysis, keyword optimization, and personalized
-            suggestions
+            suggestions powered by Gemini AI
           </p>
+          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-blue-800 text-sm">
+              <strong>Note:</strong> This analysis uses Gemini AI for
+              intelligent resume evaluation. The system will automatically fall
+              back to a comprehensive mock analysis if the AI service is
+              unavailable. For optimal results, ensure you have a stable
+              internet connection.
+            </p>
+            <div className="mt-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={async () => {
+                  try {
+                    const response = await fetch("/api/ats-analysis");
+                    const data = await response.json();
+                    console.log("API Health Check:", data);
+                    toast({
+                      title: "API Status",
+                      description: `API is running. Gemini test: ${
+                        data.geminiTest || "not tested"
+                      }`,
+                    });
+                  } catch (error) {
+                    console.error("API test failed:", error);
+                    toast({
+                      title: "API Test Failed",
+                      description: "Could not connect to the analysis API",
+                      variant: "destructive",
+                    });
+                  }
+                }}
+              >
+                Test API Connection
+              </Button>
+            </div>
+          </div>
         </header>
 
         <Tabs
@@ -247,38 +449,92 @@ export default function AnalysisPage() {
                       className="resize-none"
                     />
                   </div>
-                  <Button
-                    onClick={() => {
-                      const savedData = localStorage.getItem(
-                        "cvcraft-resume-data"
-                      );
-                      if (savedData) {
-                        const parsed = JSON.parse(savedData);
-                        setResumeText(generateResumeText(parsed));
-                        toast({
-                          title: "Resume Loaded",
-                          description: "Resume data loaded from builder.",
-                        });
-                      } else {
-                        toast({
-                          title: "No Data Found",
-                          description:
-                            "No saved resume data found. Please use the builder first.",
-                          variant: "destructive",
-                        });
-                      }
-                    }}
-                    variant="outline"
-                    className="w-full"
-                  >
-                    Load from Builder
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => {
+                        const savedData = localStorage.getItem(
+                          "cvcraft-builder-data"
+                        );
+                        if (savedData) {
+                          try {
+                            const parsed = JSON.parse(savedData);
+                            if (parsed.resumeData) {
+                              setResumeText(
+                                generateResumeText(parsed.resumeData)
+                              );
+                              toast({
+                                title: "Resume Loaded",
+                                description: "Resume data loaded from builder.",
+                              });
+                            } else {
+                              toast({
+                                title: "Invalid Data",
+                                description:
+                                  "No resume data found in saved builder data.",
+                                variant: "destructive",
+                              });
+                            }
+                          } catch (error) {
+                            toast({
+                              title: "Error Loading Data",
+                              description:
+                                "Failed to parse saved builder data.",
+                              variant: "destructive",
+                            });
+                          }
+                        } else {
+                          toast({
+                            title: "No Data Found",
+                            description:
+                              "No saved resume data found. Please use the builder first.",
+                            variant: "destructive",
+                          });
+                        }
+                      }}
+                      variant="outline"
+                      className="flex-1"
+                    >
+                      Load from Builder
+                    </Button>
+                    <Button
+                      onClick={loadSampleResume}
+                      variant="outline"
+                      className="flex-1"
+                    >
+                      Load Sample
+                    </Button>
+                  </div>
                 </div>
               </Card>
 
               <Card className="p-6">
                 <h3 className="text-xl font-semibold mb-4">Job Description</h3>
                 <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="sampleJob">
+                      Or select a sample job description
+                    </Label>
+                    <select
+                      id="sampleJob"
+                      onChange={(e) => {
+                        const selected = sampleJobDescriptions.find(
+                          (job) => job.title === e.target.value
+                        );
+                        if (selected) {
+                          setJobDescription(selected.description);
+                        }
+                      }}
+                      className="w-full p-2 border border-gray-300 rounded-md mb-2"
+                      defaultValue=""
+                    >
+                      <option value="">Choose a sample job...</option>
+                      {sampleJobDescriptions.map((job, index) => (
+                        <option key={index} value={job.title}>
+                          {job.title}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   <div>
                     <Label htmlFor="jobDesc">Paste the job description</Label>
                     <Textarea

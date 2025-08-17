@@ -1,11 +1,22 @@
-import type { FeedbackItem, ResumeData, ATSScoreResult } from "./types";
+import type {
+  FeedbackItem,
+  ResumeData,
+  ATSScoreResult,
+  ATSAnalysis,
+} from "./types";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || "");
+// Initialize Gemini AI (server-side only)
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "demo-key");
 
 // Centralized model selection: default to Gemini Pro for all clients, override via env var
-const MODEL_ID = process.env.NEXT_PUBLIC_GEMINI_MODEL || "gemini-1.5-pro";
+const MODEL_ID = process.env.GEMINI_MODEL || "gemini-1.5-pro";
+
+// Helper function to check if we have a valid API key
+function hasValidApiKey(): boolean {
+  const apiKey = process.env.GEMINI_API_KEY;
+  return Boolean(apiKey && apiKey !== "" && apiKey !== "demo-key");
+}
 
 // This function generates AI-powered feedback for the resume
 export async function generateResumeFeedback(
@@ -14,7 +25,7 @@ export async function generateResumeFeedback(
 ): Promise<FeedbackItem[]> {
   try {
     // Check if API key is available
-    if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
+    if (!hasValidApiKey()) {
       console.warn("Gemini API key not found, using mock implementation");
       await new Promise((resolve) => setTimeout(resolve, 1500));
       return mockGenerateFeedback(resumeData, jobDescription);
@@ -23,7 +34,7 @@ export async function generateResumeFeedback(
     const model = genAI.getGenerativeModel({ model: MODEL_ID });
 
     const prompt = `
-    You are an expert resume reviewer and career coach. Analyze this resume data and provide specific, actionable feedback.
+    You are the best resume reviewer in the world. Analyze this resume data and provide specific, actionable feedback. Be critical of even the small mistakes, including typos, formatting errors, and other small details. Be very thorough and detailed in your feedback. Pin point the exact issues and be critical while giving the scores.
     
     Resume Data:
     ${JSON.stringify(resumeData, null, 2)}
@@ -82,7 +93,7 @@ export async function analyzeATSScore(
 ): Promise<ATSScoreResult> {
   try {
     // Check if API key is available
-    if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
+    if (!hasValidApiKey()) {
       console.warn("Gemini API key not found, using mock implementation");
       await new Promise((resolve) => setTimeout(resolve, 1500));
       return mockATSAnalysis(resumeData, jobDescription);
@@ -569,6 +580,303 @@ function mockATSAnalysis(
     missingKeywords: missingKeywords.slice(0, 5),
     improvementTips: improvementTips.slice(0, 5),
     strengths: strengths.slice(0, 3),
+  };
+}
+
+// This function analyzes text-based resumes for ATS compatibility using Gemini
+export async function analyzeResumeText(
+  resumeText: string,
+  jobDescription: string
+): Promise<ATSAnalysis> {
+  try {
+    // Check if we have a valid API key, if not use mock
+    if (!hasValidApiKey()) {
+      console.warn("Gemini API key not found, using mock implementation");
+      return mockTextBasedAnalysis(resumeText, jobDescription);
+    }
+
+    // Try to use Gemini with proper error handling
+    const model = genAI.getGenerativeModel({ model: MODEL_ID });
+
+    // Hardcoded prompt for consistent analysis
+    const prompt = `You are the world's best ATS (Applicant Tracking System) expert and resume optimization specialist. Your task is to analyze this resume against the job description and provide a detailed, critical assessment.
+
+RESUME TEXT:
+${resumeText}
+
+JOB DESCRIPTION:
+${jobDescription}
+
+ANALYSIS REQUIREMENTS:
+- Be thorough and critical in your evaluation
+- Look for exact keyword matches, not just similar terms
+- Evaluate formatting, structure, and ATS readability
+- Identify specific issues and provide actionable suggestions
+- Score each section fairly but critically
+
+Provide your analysis in this EXACT JSON format. Return ONLY the JSON object, no markdown code blocks, no additional text, no triple backticks:
+{
+  "overallScore": 85,
+  "keywordMatch": 75,
+  "formatting": 90,
+  "readability": 80,
+  "sections": [
+    {
+      "name": "Contact Information",
+      "score": 95,
+      "issues": ["No LinkedIn profile"],
+      "suggestions": ["Add LinkedIn profile for better networking"]
+    },
+    {
+      "name": "Professional Summary",
+      "score": 80,
+      "issues": ["Too generic"],
+      "suggestions": ["Tailor summary to job requirements"]
+    },
+    {
+      "name": "Experience",
+      "score": 85,
+      "issues": ["Missing quantifiable achievements"],
+      "suggestions": ["Add specific metrics and numbers to demonstrate impact"]
+    },
+    {
+      "name": "Education",
+      "score": 90,
+      "issues": [],
+      "suggestions": ["Education section looks good"]
+    },
+    {
+      "name": "Skills",
+      "score": 75,
+      "issues": ["Some skills don't match job requirements"],
+      "suggestions": ["Add more skills mentioned in the job description"]
+    },
+    {
+      "name": "Projects",
+      "score": 80,
+      "issues": ["Could use more technical detail"],
+      "suggestions": ["Include technologies used and outcomes achieved"]
+    }
+  ],
+  "missingKeywords": ["machine learning", "python", "agile"],
+  "foundKeywords": ["javascript", "react", "node.js"],
+  "suggestions": [
+    {
+      "priority": "high",
+      "category": "Keywords",
+      "text": "Add missing technical skills from job description",
+      "impact": "Will significantly improve ATS matching score"
+    },
+    {
+      "priority": "medium",
+      "category": "Content",
+      "text": "Quantify achievements with specific numbers and percentages",
+      "impact": "Will make resume more impactful and ATS-friendly"
+    },
+    {
+      "priority": "low",
+      "category": "Formatting",
+      "text": "Ensure consistent formatting throughout all sections",
+      "impact": "Will improve readability and professional appearance"
+    }
+  ]
+}
+
+Base your analysis on:
+1. Keyword matching between resume and job description
+2. Resume formatting and structure
+3. Content quality and relevance
+4. Use of industry-standard terminology
+5. Quantifiable achievements
+6. Professional presentation
+
+For sections, analyze: Contact Info, Summary, Experience, Education, Skills, Projects
+For suggestions, prioritize based on impact on ATS score
+For keywords, focus on technical skills, tools, and methodologies mentioned in the job description
+
+Respond only with valid JSON, no additional text.`;
+
+    console.log("Attempting to use Gemini API for resume analysis...");
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    console.log(
+      "Gemini API response received:",
+      text.substring(0, 200) + "..."
+    );
+
+    try {
+      // Clean the response by removing markdown code blocks
+      let cleanedText = text.trim();
+
+      // Remove ```json and ``` markers if present
+      if (cleanedText.startsWith("```json")) {
+        cleanedText = cleanedText.replace(/^```json\s*/, "");
+      }
+      if (cleanedText.startsWith("```")) {
+        cleanedText = cleanedText.replace(/^```\s*/, "");
+      }
+      if (cleanedText.endsWith("```")) {
+        cleanedText = cleanedText.replace(/\s*```$/, "");
+      }
+
+      console.log(
+        "Cleaned response for parsing:",
+        cleanedText.substring(0, 200) + "..."
+      );
+
+      const parsedResponse = JSON.parse(cleanedText) as ATSAnalysis;
+      console.log("Successfully parsed Gemini response");
+      return parsedResponse;
+    } catch (error) {
+      console.error("Error parsing Gemini response:", error);
+      console.log("Raw response:", text);
+      console.log("Falling back to mock analysis due to parsing error");
+      return mockTextBasedAnalysis(resumeText, jobDescription);
+    }
+  } catch (error) {
+    console.error("Error calling Gemini API:", error);
+    console.log("Falling back to mock analysis due to API error");
+    return mockTextBasedAnalysis(resumeText, jobDescription);
+  }
+}
+
+// Mock implementation for text-based analysis
+function mockTextBasedAnalysis(
+  resumeText: string,
+  jobDescription: string
+): ATSAnalysis {
+  // Extract potential keywords from job description
+  const jobKeywords = extractKeywords(jobDescription.toLowerCase());
+  const resumeTextLower = resumeText.toLowerCase();
+
+  // Calculate keyword match
+  const matchedKeywords = jobKeywords.filter((keyword) =>
+    resumeTextLower.includes(keyword)
+  );
+  const keywordMatch = Math.min(
+    100,
+    Math.round((matchedKeywords.length / Math.max(jobKeywords.length, 1)) * 100)
+  );
+
+  // More sophisticated scoring
+  let formattingScore = 85;
+  let readabilityScore = 80;
+
+  // Check for proper formatting
+  if (resumeText.includes("EDUCATION") || resumeText.includes("Education"))
+    formattingScore += 5;
+  if (resumeText.includes("EXPERIENCE") || resumeText.includes("Experience"))
+    formattingScore += 5;
+  if (resumeText.includes("SKILLS") || resumeText.includes("Skills"))
+    formattingScore += 5;
+  if (resumeText.includes("•") || resumeText.includes("-"))
+    readabilityScore += 5;
+  if (resumeText.includes("@") && resumeText.includes("phone"))
+    formattingScore += 5;
+
+  // Calculate overall score
+  const overallScore = Math.round(
+    keywordMatch * 0.4 +
+      Math.min(95, formattingScore) * 0.3 +
+      Math.min(95, readabilityScore) * 0.3
+  );
+
+  // Generate sections analysis
+  const sections = [
+    {
+      name: "Contact Information",
+      score: resumeText.includes("@") && resumeText.includes("phone") ? 95 : 70,
+      issues: resumeText.includes("@") ? [] : ["Missing email address"],
+      suggestions: resumeText.includes("@")
+        ? ["Contact info looks good"]
+        : ["Add professional email address"],
+    },
+    {
+      name: "Professional Summary",
+      score:
+        resumeText.includes("summary") || resumeText.includes("objective")
+          ? 85
+          : 60,
+      issues: resumeText.includes("summary")
+        ? []
+        : ["No clear summary section"],
+      suggestions: resumeText.includes("summary")
+        ? ["Summary is present"]
+        : ["Add a professional summary section"],
+    },
+    {
+      name: "Experience",
+      score:
+        resumeText.includes("experience") || resumeText.includes("work")
+          ? 80
+          : 50,
+      issues: resumeText.includes("experience")
+        ? []
+        : ["No work experience section"],
+      suggestions: resumeText.includes("experience")
+        ? ["Experience section present"]
+        : ["Add work experience section"],
+    },
+    {
+      name: "Skills",
+      score:
+        resumeText.includes("skills") || resumeText.includes("technical")
+          ? 85
+          : 60,
+      issues: resumeText.includes("skills") ? [] : ["No skills section"],
+      suggestions: resumeText.includes("skills")
+        ? ["Skills section present"]
+        : ["Add technical skills section"],
+    },
+  ];
+
+  // Generate suggestions
+  const suggestions = [
+    {
+      priority: (keywordMatch < 60 ? "high" : "medium") as
+        | "high"
+        | "medium"
+        | "low",
+      category: "Keywords",
+      text:
+        keywordMatch < 60
+          ? "Add more keywords from job description"
+          : "Consider adding a few more relevant keywords",
+      impact:
+        keywordMatch < 60
+          ? "Will significantly improve ATS matching"
+          : "Will slightly improve ATS matching",
+    },
+    {
+      priority: (resumeText.length < 800 ? "medium" : "low") as
+        | "high"
+        | "medium"
+        | "low",
+      category: "Content",
+      text:
+        resumeText.length < 800
+          ? "Resume seems brief - consider adding more detail"
+          : "Resume length looks appropriate",
+      impact:
+        resumeText.length < 800
+          ? "More detail will improve recruiter impression"
+          : "Current length is good for ATS",
+    },
+  ];
+
+  return {
+    overallScore,
+    keywordMatch,
+    formatting: Math.min(95, formattingScore),
+    readability: Math.min(95, readabilityScore),
+    sections,
+    missingKeywords: jobKeywords
+      .slice(0, 5)
+      .filter((keyword) => !resumeTextLower.includes(keyword)),
+    foundKeywords: matchedKeywords.slice(0, 5),
+    suggestions,
   };
 }
 

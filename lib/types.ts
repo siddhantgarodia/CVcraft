@@ -175,6 +175,28 @@ export interface ATSScoreResult {
   strengths: string[];
 }
 
+// New comprehensive ATS analysis interface for the frontend
+export interface ATSAnalysis {
+  overallScore: number;
+  keywordMatch: number;
+  formatting: number;
+  readability: number;
+  sections: {
+    name: string;
+    score: number;
+    issues: string[];
+    suggestions: string[];
+  }[];
+  missingKeywords: string[];
+  foundKeywords: string[];
+  suggestions: {
+    priority: "high" | "medium" | "low";
+    category: string;
+    text: string;
+    impact: string;
+  }[];
+}
+
 export interface ResumeAnalytics {
   views: number;
   downloads: number;
